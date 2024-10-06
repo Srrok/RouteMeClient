@@ -1,0 +1,11 @@
+{
+  "name": "routeme",
+  "author": "srrok",
+  "type": "module",
+  "scripts": {
+    "git": "git add . && git commit -m \"Automatic commit\" && git push -u origin main"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
