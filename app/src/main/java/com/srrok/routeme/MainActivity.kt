@@ -86,13 +86,6 @@ class MainActivity: Activity() {
           }
         }
       }
-      //При открытии сторонних ссылок
-      @Deprecated("Deprecated in Java")
-      override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-        //Прогружаем ссылку в текущем окне
-        view.loadUrl(url)
-        return true
-      }
     }
     //Класс работы с Chrome клиентом
     class WebClient: WebChromeClient() {
