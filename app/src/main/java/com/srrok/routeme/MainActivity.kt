@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 
 //Базовый экран
 class MainActivity : Activity() {
-  //При создании
+  //При создании экрана
   @SuppressLint("SetJavaScriptEnabled")
   override fun onCreate(savedInstanceState: Bundle?) {
     //Инициализация экрана и родителя
