@@ -61,7 +61,7 @@ class MainActivity: Activity() {
     webSettings.builtInZoomControls = false
     webSettings.displayZoomControls = false
     //Параметры связи с Web интерфейсом
-    webSettings.userAgentString = "RouteMeClient"
+    webSettings.userAgentString = getString(R.string.userAgent)
     //Устанавливаем WebViewClient для отслеживания загрузки
     webView.webViewClient = object: android.webkit.WebViewClient() {
       //Получаем контекст
