@@ -3,20 +3,18 @@ package com.srrok.routeme
 
 //Библиотека
 import android.os.Bundle
+import android.app.Activity
 import androidx.core.view.ViewCompat
 import android.view.ViewTreeObserver
-import androidx.activity.enableEdgeToEdge
 import androidx.core.view.WindowInsetsCompat
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 
 //Базовый экран
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
   //При создании
   override fun onCreate(savedInstanceState: Bundle?) {
     //Инициализация экрана и родителя
     super.onCreate(savedInstanceState)
-    enableEdgeToEdge()
     setContentView(R.layout.activity_main)
     //Получаем ConstraintLayout по ID
     val mainConstraintLayout = findViewById<ConstraintLayout>(R.id.main)
