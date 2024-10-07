@@ -95,8 +95,8 @@ class MainActivity: Activity() {
                 vibrator.vibrate(100L)
               }
               //Создаем диалог с ошибкой
-              builder.setTitle("Ошибка загрузки страницы: ${error?.errorCode?: 524}")
-              builder.setMessage(error?.description?: "Время ожидания истекло!")
+              builder.setTitle("Ошибка загрузки страницы: ${error.errorCode}")
+              builder.setMessage(error.description ?: "Время ожидания истекло!")
               builder.setNegativeButton("Выйти") { _, _ -> finish() }
               builder.show()
             }
