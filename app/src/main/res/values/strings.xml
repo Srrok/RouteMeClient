@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">RouteMe</string>
   <string name="link">https://routeme.srrok.ru</string>
+  <string name="author">© Sыrok, MetallBank\nrouteme.srrok.ru</string>
 </resources>
