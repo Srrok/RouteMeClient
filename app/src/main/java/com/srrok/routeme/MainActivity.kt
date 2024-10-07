@@ -19,6 +19,8 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import androidx.core.view.WindowInsetsCompat
 import androidx.constraintlayout.widget.ConstraintLayout
+import android.os.Handler
+import android.os.Looper
 
 //Базовый экран
 @Suppress("DEPRECATION")
@@ -66,15 +68,18 @@ class MainActivity: Activity() {
       val context = this@MainActivity
       //При начале загрузки страницы
       override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-        //Скрываем WebView, отображая загрузчик
+        //Активируем загрузчик
         loader.visibility = View.VISIBLE
         webView.visibility = View.GONE
       }
       //При загрузке страницы
       override fun onPageFinished(view: WebView?, url: String?) {
-        //Скрываем экран после окончания загрузки WebView
-        loader.visibility = View.GONE
-        webView.visibility = View.VISIBLE
+        //Добавляем обязательную задержку
+        Handler(Looper.getMainLooper()).postDelayed({
+          //Скрываем экран после окончания загрузки WebView
+          loader.visibility = View.GONE
+          webView.visibility = View.VISIBLE
+        }, 3000)
       }
       //При ошибке загрузки
       override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
@@ -104,6 +109,7 @@ class MainActivity: Activity() {
         }
       }
     }
+
     //Получаем ConstraintLayout по ID
     val mainConstraintLayout = findViewById<ConstraintLayout>(R.id.main)
     //Устанавливаем слушатель для получения отступов
