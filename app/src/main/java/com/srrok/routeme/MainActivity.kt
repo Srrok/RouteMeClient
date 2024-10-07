@@ -9,17 +9,20 @@ import android.os.Handler
 import android.os.Vibrator
 import android.app.Activity
 import android.webkit.WebView
-import android.app.AlertDialog
-import android.content.Context
 import android.graphics.Bitmap
+import android.content.Context
+import android.app.AlertDialog
 import android.webkit.WebSettings
 import android.widget.LinearLayout
+import android.webkit.WebViewClient
 import android.view.ViewTreeObserver
 import androidx.core.view.ViewCompat
+import android.webkit.WebChromeClient
 import android.annotation.SuppressLint
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import androidx.core.view.WindowInsetsCompat
+import android.webkit.GeolocationPermissions
 import androidx.constraintlayout.widget.ConstraintLayout
 
 //Базовый экран
@@ -33,6 +36,26 @@ class MainActivity: Activity() {
   //Сервис вибратора
   private lateinit var vibrator: Vibrator
   private var canVibrate: Boolean = false
+
+  //Вспомогательный класс работы с WebView
+  class GeoWebViewClient: WebViewClient() {
+    //При открытии сторонних ссылок
+    @Deprecated("Deprecated in Java")
+    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+      //Прогружаем ссылку в текущем окне
+      view.loadUrl(url)
+      return true
+    }
+  }
+
+  //Класс работы с геолокацией
+  class GeoWebChromeClient: WebChromeClient() {
+    //При демонстрации разрешения на использование геолокации у WebView
+    override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+      //Разрешаем доступ к геолокации
+      callback.invoke(origin, true, false)
+    }
+  }
 
   //При создании
   @SuppressLint("SetJavaScriptEnabled")
@@ -49,6 +72,8 @@ class MainActivity: Activity() {
     loader = findViewById(R.id.loader)
     //Присваиваем ссылку
     webView.loadUrl(getString(R.string.link))
+    webView.webViewClient = GeoWebViewClient()
+    webView.webChromeClient = GeoWebChromeClient()
     //Параметры кэширования страницы
     webSettings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
     //Параметры JavaScript, геолокации и хранилища
@@ -63,7 +88,7 @@ class MainActivity: Activity() {
     //Параметры связи с Web интерфейсом
     webSettings.userAgentString = getString(R.string.userAgent)
     //Устанавливаем WebViewClient для отслеживания загрузки
-    webView.webViewClient = object: android.webkit.WebViewClient() {
+    webView.webViewClient = object: WebViewClient() {
       //Получаем контекст
       val context = this@MainActivity
       //При начале загрузки страницы
