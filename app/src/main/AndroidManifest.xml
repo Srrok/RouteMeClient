@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Действующая конфигурация приложения -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools">
+  <!-- Права приложения -->
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
   <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+  <!-- Параметры приложения -->
   <application
     android:allowBackup="true"
     android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,10 +18,12 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.RouteMe"
     tools:targetApi="31">
+    <!-- Главное активити -->
     <activity
       android:name=".MainActivity"
       android:exported="true"
       android:theme="@style/Theme.RouteMe">
+      <!-- Параметры запуска -->
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>

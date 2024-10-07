@@ -70,16 +70,17 @@ class MainActivity: Activity() {
     webView = findViewById(R.id.view)
     webSettings = webView.settings
     loader = findViewById(R.id.loader)
-    //Присваиваем ссылку
+    //Базовые параметры
     webView.loadUrl(getString(R.string.link))
+    //Параметры геолокации
     webView.webViewClient = GeoWebViewClient()
     webView.webChromeClient = GeoWebChromeClient()
+    webSettings.setGeolocationEnabled(true)
     //Параметры кэширования страницы
     webSettings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-    //Параметры JavaScript, геолокации и хранилища
+    //Параметры JavaScript и хранилища
     webSettings.javaScriptEnabled = true
     webSettings.domStorageEnabled = true
-    webSettings.setGeolocationEnabled(true)
     webSettings.javaScriptCanOpenWindowsAutomatically = true
     //Отключаем масштабирование
     webSettings.setSupportZoom(false)
