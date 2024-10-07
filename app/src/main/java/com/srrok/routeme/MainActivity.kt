@@ -2,8 +2,10 @@
 package com.srrok.routeme
 
 //Библиотека
-import android.view.View
 import android.os.Bundle
+import android.os.Looper
+import android.view.View
+import android.os.Handler
 import android.os.Vibrator
 import android.app.Activity
 import android.webkit.WebView
@@ -19,8 +21,6 @@ import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import androidx.core.view.WindowInsetsCompat
 import androidx.constraintlayout.widget.ConstraintLayout
-import android.os.Handler
-import android.os.Looper
 
 //Базовый экран
 @Suppress("DEPRECATION")
