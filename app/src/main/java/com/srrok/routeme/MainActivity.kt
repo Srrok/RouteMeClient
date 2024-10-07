@@ -2,28 +2,28 @@
 package com.srrok.routeme
 
 //Библиотека
-import android.os.Bundle
-import android.os.Looper
-import android.view.View
-import android.os.Handler
-import android.os.Vibrator
-import android.app.Activity
-import android.webkit.WebView
-import android.graphics.Bitmap
-import android.content.Context
-import android.app.AlertDialog
-import android.webkit.WebSettings
-import android.widget.LinearLayout
-import android.webkit.WebViewClient
-import android.view.ViewTreeObserver
-import androidx.core.view.ViewCompat
-import android.webkit.WebChromeClient
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Bitmap
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Vibrator
+import android.view.View
+import android.view.ViewTreeObserver
+import android.webkit.GeolocationPermissions
+import android.webkit.WebChromeClient
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
-import androidx.core.view.WindowInsetsCompat
-import android.webkit.GeolocationPermissions
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 
 //Базовый экран
 @Suppress("DEPRECATION")
@@ -37,59 +37,11 @@ class MainActivity: Activity() {
   private lateinit var vibrator: Vibrator
   private var canVibrate: Boolean = false
 
-  //Вспомогательный класс работы с WebView
-  class GeoWebViewClient: WebViewClient() {
-    //При открытии сторонних ссылок
-    @Deprecated("Deprecated in Java")
-    override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-      //Прогружаем ссылку в текущем окне
-      view.loadUrl(url)
-      return true
-    }
-  }
-
-  //Класс работы с геолокацией
-  class GeoWebChromeClient: WebChromeClient() {
-    //При демонстрации разрешения на использование геолокации у WebView
-    override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
-      //Разрешаем доступ к геолокации
-      callback.invoke(origin, true, false)
-    }
-  }
-
   //При создании
   @SuppressLint("SetJavaScriptEnabled")
   override fun onCreate(savedInstanceState: Bundle?) {
-    //Инициализация экрана и родителя
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
-    //Инициализация вибратора
-    vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    canVibrate = vibrator.hasVibrator()
-    //Получаем WebView и параметры по ID
-    webView = findViewById(R.id.view)
-    webSettings = webView.settings
-    loader = findViewById(R.id.loader)
-    //Базовые параметры
-    webView.loadUrl(getString(R.string.link))
-    //Параметры геолокации
-    webView.webViewClient = GeoWebViewClient()
-    webView.webChromeClient = GeoWebChromeClient()
-    webSettings.setGeolocationEnabled(true)
-    //Параметры кэширования страницы
-    webSettings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
-    //Параметры JavaScript и хранилища
-    webSettings.javaScriptEnabled = true
-    webSettings.domStorageEnabled = true
-    webSettings.javaScriptCanOpenWindowsAutomatically = true
-    //Отключаем масштабирование
-    webSettings.setSupportZoom(false)
-    webSettings.builtInZoomControls = false
-    webSettings.displayZoomControls = false
-    //Параметры связи с Web интерфейсом
-    webSettings.userAgentString = getString(R.string.userAgent)
-    //Устанавливаем WebViewClient для отслеживания загрузки
-    webView.webViewClient = object: WebViewClient() {
+    //Класс работы с WebView
+    class ViewClient: WebViewClient() {
       //Получаем контекст
       val context = this@MainActivity
       //При начале загрузки страницы
@@ -134,8 +86,52 @@ class MainActivity: Activity() {
           }
         }
       }
+      //При открытии сторонних ссылок
+      @Deprecated("Deprecated in Java")
+      override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        //Прогружаем ссылку в текущем окне
+        view.loadUrl(url)
+        return true
+      }
     }
-
+    //Класс работы с Chrome клиентом
+    class WebClient: WebChromeClient() {
+      //При демонстрации разрешения на использование геолокации у WebView
+      override fun onGeolocationPermissionsShowPrompt(origin: String, callback: GeolocationPermissions.Callback) {
+        //Разрешаем доступ к геолокации
+        callback.invoke(origin, true, false)
+      }
+    }
+    //Инициализация экрана и родителя
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    //Инициализация вибратора
+    vibrator = this.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    canVibrate = vibrator.hasVibrator()
+    //Получаем WebView и параметры по ID
+    webView = findViewById(R.id.view)
+    webSettings = webView.settings
+    loader = findViewById(R.id.loader)
+    //Базовые параметры
+    webView.loadUrl(getString(R.string.link))
+    webView.requestFocusFromTouch()
+    //Параметры геолокации
+    webSettings.setGeolocationEnabled(true)
+    //Параметры кэширования страницы
+    webSettings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+    //Параметры JavaScript и хранилища
+    webSettings.javaScriptEnabled = true
+    webSettings.domStorageEnabled = true
+    webSettings.javaScriptCanOpenWindowsAutomatically = true
+    //Отключаем масштабирование
+    webSettings.setSupportZoom(false)
+    webSettings.builtInZoomControls = false
+    webSettings.displayZoomControls = false
+    //Параметры связи с Web интерфейсом
+    webSettings.userAgentString = getString(R.string.userAgent)
+    //Клиенты WebView
+    webView.webViewClient = ViewClient()
+    webView.webChromeClient = WebClient()
     //Получаем ConstraintLayout по ID
     val mainConstraintLayout = findViewById<ConstraintLayout>(R.id.main)
     //Устанавливаем слушатель для получения отступов
